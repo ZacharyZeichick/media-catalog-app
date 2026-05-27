@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catalog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Nav — floats over hero -->
+  <nav class="nav" id="top-bar">
+    <div class="nav-default" id="top-bar-default">
+      <div class="nav-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg>
+      </div>
+      <div class="nav-actions">
+        <button class="nav-icon-btn" id="dashboard-btn" aria-label="Dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </button>
+        <button class="nav-icon-btn" id="watchlist-btn" aria-label="Watchlist">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </button>
+        <button class="nav-icon-btn" id="lists-open-btn" aria-label="Lists">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </button>
+        <button class="nav-icon-btn" id="search-open-btn" aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button id="add-btn" class="nav-add-btn">+ Add</button>
+      </div>
+    </div>
+    <div class="nav-search" id="top-bar-search">
+      <input type="search" id="search-input" placeholder="Search your catalog…" autocomplete="off" spellcheck="false">
+      <button class="nav-icon-btn" id="search-close-btn" aria-label="Close search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero carousel -->
+  <section class="hero" id="hero-carousel">
+    <div class="hero-slides" id="hero-slides"></div>
+    <div class="hero-dots" id="hero-dots"></div>
+  </section>
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <div class="seg-control">
+      <button class="seg-btn active" data-type="">All</button>
+      <button class="seg-btn" data-type="movie">Movies</button>
+      <button class="seg-btn" data-type="show">Shows</button>
+    </div>
+    <div class="filter-selects">
+      <div class="custom-select" id="status-select" data-target="status-filter">
+        <button class="custom-select-trigger">Status</button>
+        <div class="custom-select-menu">
+          <div class="custom-select-option selected" data-value="">All</div>
+          <div class="custom-select-option" data-value="Watched">Watched</div>
+          <div class="custom-select-option" data-value="Caught Up">Caught Up</div>
+          <div class="custom-select-option" data-value="Watching">Watching</div>
+          <div class="custom-select-option" data-value="Planned">Planned</div>
+          <div class="custom-select-option" data-value="On Hold">On Hold</div>
+          <div class="custom-select-option" data-value="Get Back To">Get Back To</div>
+          <div class="custom-select-option" data-value="Dropped">Dropped</div>
+        </div>
+      </div>
+      <div class="custom-select" id="genre-select" data-target="genre-filter">
+        <button class="custom-select-trigger">Genre</button>
+        <div class="custom-select-menu" id="genre-menu"></div>
+      </div>
+      <div class="custom-select" id="rewatch-select" data-target="rewatch-filter">
+        <button class="custom-select-trigger">Rewatch</button>
+        <div class="custom-select-menu">
+          <div class="custom-select-option selected" data-value="">All</div>
+          <div class="custom-select-option" data-value="Never">Never</div>
+          <div class="custom-select-option" data-value="Rarely">Rarely</div>
+          <div class="custom-select-option" data-value="Sometimes">Sometimes</div>
+          <div class="custom-select-option" data-value="Anytime">Anytime</div>
+        </div>
+      </div>
+      <div class="custom-select" id="sort-dropdown" data-target="sort-select">
+        <button class="custom-select-trigger">Title A–Z</button>
+        <div class="custom-select-menu">
+          <div class="custom-select-option selected" data-value="title-asc">Title A–Z</div>
+          <div class="custom-select-option" data-value="title-desc">Title Z–A</div>
+          <div class="custom-select-option" data-value="year-desc">Newest</div>
+          <div class="custom-select-option" data-value="year-asc">Oldest</div>
+          <div class="custom-select-option" data-value="score-desc">My Score</div>
+          <div class="custom-select-option" data-value="imdb-desc">IMDb</div>
+          <div class="custom-select-option" data-value="rt-desc">RT Critics</div>
+          <div class="custom-select-option" data-value="rt-aud-desc">RT Audience</div>
+          <div class="custom-select-option" data-value="mc-desc">Metacritic</div>
+          <div class="custom-select-option" data-value="added-desc">Recently Added</div>
+        </div>
+      </div>
+    </div>
+    <div class="filter-spacer"></div>
+    <div class="seg-control">
+      <button class="seg-btn active" data-rated="">All</button>
+      <button class="seg-btn" data-rated="rated">Rated</button>
+      <button class="seg-btn" data-rated="unrated">Unrated</button>
+      <button class="seg-btn" data-rated="needs-rating">Needs Rating</button>
+    </div>
+  </div>
+
+  <!-- FAB: What to Watch -->
+  <button id="recommend-btn" class="fab" aria-label="What to Watch">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h2l.5 3M6 7l1.6 8h10.8l2-8H6zM9 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm10 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/><path d="M12 3v4m-2-2h4"/></svg>
+  </button>
+
+  <main>
+    <div id="list-view-header" class="list-view-header" hidden>
+      <button class="nav-icon-btn" id="list-back-btn" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <div class="list-view-info">
+        <h2 id="list-view-name"></h2>
+        <span id="list-view-count" class="section-header-counts"></span>
+      </div>
+      <div class="list-view-actions">
+        <button class="nav-icon-btn" id="list-edit-btn" aria-label="Edit list">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="nav-icon-btn list-delete-btn" id="list-delete-btn" aria-label="Delete list">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="watchlist-view-header" class="list-view-header" hidden>
+      <button class="nav-icon-btn" id="watchlist-back-btn" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <div class="list-view-info">
+        <h2>Watchlist</h2>
+        <span id="watchlist-view-count" class="section-header-counts"></span>
+      </div>
+    </div>
+    <div id="dashboard-view-header" class="list-view-header" hidden>
+      <button class="nav-icon-btn" id="dashboard-back-btn" aria-label="Back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      </button>
+      <div class="list-view-info">
+        <h2>Dashboard</h2>
+      </div>
+    </div>
+    <div id="dashboard-content" class="dashboard-content" hidden></div>
+    <div class="section-header" id="section-header"></div>
+    <div id="card-grid"></div>
+    <div id="empty-state" hidden>No results.</div>
+  </main>
+
+  <div id="overlay"></div>
+
+  <aside id="detail-drawer" aria-hidden="true">
+    <div id="detail-content"></div>
+  </aside>
+
+  <div id="add-modal" hidden>
+    <div class="modal">
+      <h2 class="modal-title">Add to Catalog</h2>
+      <div class="form-field" style="position:relative">
+        <label>Search</label>
+        <input id="add-title" type="text" placeholder="Search OMDb…" autocomplete="off">
+        <div id="omdb-results" class="omdb-results" hidden></div>
+      </div>
+      <div class="modal-actions">
+        <button id="add-cancel-btn" class="btn-ghost">Cancel</button>
+      </div>
+      <div id="add-status" class="modal-status"></div>
+    </div>
+  </div>
+
+  <div id="recommend-modal" hidden>
+    <div class="modal recommend-modal">
+      <div class="rec-header">
+        <h2 class="modal-title">What should I watch?</h2>
+        <button id="recommend-close" class="close-btn" aria-label="Close">✕</button>
+      </div>
+      <div class="rec-controls">
+        <div class="type-toggles rec-tabs">
+          <button class="type-btn" data-rec-mode="watch_next">Watch Next</button>
+          <button class="type-btn active" data-rec-mode="rewatch">Rewatch</button>
+          <button class="type-btn" data-rec-mode="discover">Discover</button>
+        </div>
+        <div class="type-toggles rec-media-filter">
+          <button class="type-btn active" data-rec-media="">Any</button>
+          <button class="type-btn" data-rec-media="movie">Movies</button>
+          <button class="type-btn" data-rec-media="show">Shows</button>
+        </div>
+      </div>
+      <div id="preset-chips" class="preset-chips"></div>
+      <div class="rec-freeform">
+        <input id="mood-input" type="text" placeholder="Or describe what you're in the mood for..." autocomplete="off">
+        <button id="recommend-submit" class="btn-primary">Go</button>
+      </div>
+      <div id="recommend-status" class="modal-status"></div>
+      <div id="recommend-results"></div>
+    </div>
+  </div>
+
+  <!-- Lists panel (slides from left) -->
+  <div id="lists-overlay" class="lists-overlay"></div>
+  <aside id="lists-panel" class="lists-panel">
+    <div class="lists-panel-header">
+      <h2>My Lists</h2>
+      <button class="nav-add-btn" id="create-list-btn">+ New List</button>
+    </div>
+    <div id="lists-panel-content" class="lists-panel-content"></div>
+  </aside>
+
+
+
+  <!-- Create list modal -->
+  <div id="create-list-modal" hidden>
+    <div class="modal">
+      <h2 class="modal-title">New List</h2>
+      <div class="form-field">
+        <label>Name</label>
+        <input id="new-list-name" type="text" placeholder="e.g. Top 10 Thrillers" autocomplete="off">
+      </div>
+      <div class="form-field">
+        <label>Description (optional)</label>
+        <textarea id="new-list-desc" placeholder="What's this list about?"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button id="create-list-submit" class="btn-primary">Create</button>
+        <button id="create-list-cancel" class="btn-ghost">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
