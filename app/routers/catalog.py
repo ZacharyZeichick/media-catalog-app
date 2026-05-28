@@ -1,8 +1,11 @@
+from typing import Literal
+
 from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import asc, desc, nulls_last
 from sqlalchemy.orm import Session, joinedload
 
 from app.database import get_db
-from app.models.catalog import Entry, MediaPerson, MediaType, WatchStatus
+from app.models.catalog import Entry, MediaPerson, MediaType, WatchStatus, WatchlistItem
 from app.schemas import EntryCreate, EntryOut, EntryUpdate
 from app.services import mdblist, omdb, tmdb, watchmode
 
@@ -36,23 +39,56 @@ def search_media(q: str = Query(min_length=1), db: Session = Depends(get_db)):
     )
 
 
+_SORT_COLS = {
+    "title": Entry.title,
+    "rating": Entry.rating,
+    "year": Entry.year,
+    "date_added": Entry.date_added,
+}
+
+
 @router.get("", response_model=list[EntryOut])
 def list_media(
+    q: str | None = Query(default=None, description="Title search"),
     media_type: MediaType | None = Query(default=None, alias="type"),
     status: WatchStatus | None = None,
     genre: str | None = None,
+    vibe_tag: str | None = None,
+    min_rating: float | None = Query(default=None, ge=1, le=10),
+    year: int | None = None,
+    sort_by: Literal["title", "rating", "year", "date_added", "watchlist_priority"] = Query(default="title"),
+    sort_dir: Literal["asc", "desc"] = Query(default="asc"),
+    limit: int = Query(default=50, ge=1, le=500),
+    offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db),
 ):
     query = db.query(Entry).options(
         joinedload(Entry.people).joinedload(MediaPerson.person)
     )
+
+    if q:
+        query = query.filter(Entry.title.ilike(f"%{q}%"))
     if media_type is not None:
         query = query.filter(Entry.media_type == media_type)
     if status is not None:
         query = query.filter(Entry.status == status)
     if genre is not None:
         query = query.filter(Entry.genres.ilike(f"%{genre}%"))
-    return query.order_by(Entry.title).all()
+    if vibe_tag is not None:
+        query = query.filter(Entry.vibe_tags.ilike(f"%{vibe_tag}%"))
+    if min_rating is not None:
+        query = query.filter(Entry.rating >= min_rating)
+    if year is not None:
+        query = query.filter(Entry.year == year)
+
+    sort_fn = asc if sort_dir == "asc" else desc
+    if sort_by == "watchlist_priority":
+        query = query.outerjoin(Entry.watchlist_item)
+        query = query.order_by(nulls_last(sort_fn(WatchlistItem.priority)))
+    else:
+        query = query.order_by(sort_fn(_SORT_COLS[sort_by]))
+
+    return query.offset(offset).limit(limit).all()
 
 
 @router.get("/{entry_id}", response_model=EntryOut)
