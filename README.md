@@ -25,9 +25,9 @@ Supports movie and show tracking, priority watchlists, custom lists, metadata en
 
 ## Screenshots
 
-![Dashboard](docs/screenshots/dashboard.png)
 ![Catalog](docs/screenshots/catalog.png)
 ![Detail View](docs/screenshots/detail.png)
+![Dashboard](docs/screenshots/dashboard.png)
 
 ---
 
